@@ -3,6 +3,7 @@ import { INotifier, Status } from '~/interfaces/notifier.interface';
 import { IPayloadFetchRss } from '~/interfaces/api.interface';
 import { LOCAL_STORAGE_RSS_KEY } from '~/constants/key.constant';
 import { dateFormatter } from '~/utils/date.util';
+import { getBaseUrl, getDomainName } from '~/utils/url.util';
 
 useHead({
   title: 'RSS Notifier',
@@ -154,9 +155,10 @@ const showNotification = (notifyData: INotifier) => {
       const options = {
         body: notifyData.items.map((item) => `🚀  ${item.title}`).join('\n'),
         icon: '/images/rss-logo.png',
+        data: { link: getBaseUrl(notifyData.rss) },
         actions: [
-          { action: 'upwork', title: 'Upwork' },
           { action: 'rss-notifier', title: 'RSS Notifier' },
+          { action: 'custom', title: getDomainName(notifyData.rss) },
         ],
       };
 
@@ -237,4 +239,4 @@ onBeforeUnmount(() => {
     </footer>
   </div>
 </template>
-./interfaces/api.interface ./interfaces/notifier.interface
+./interfaces/api.interface ./interfaces/notifier.interface ~/utils/url.util
