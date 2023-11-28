@@ -83,11 +83,11 @@ defineEmits(['delete-notif', 'play-notif', 'pause-notif']);
         {{ notifier.title }} <span class="text-sm">(Top 3 items)</span>
       </h2>
 
-      <div class="text-xs">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-2 text-xs">
         <span class="badge badge-outline text-xs">
           Interval: {{ notifier.interval }}s
         </span>
-        Last Updated: {{ notifier.lastUpdated || '-' }}
+        <span> Last updated: {{ notifier.lastUpdated || '-' }} </span>
       </div>
 
       <div
@@ -96,7 +96,7 @@ defineEmits(['delete-notif', 'play-notif', 'pause-notif']);
         class="collapse collapse-arrow bg-base-200"
       >
         <input type="checkbox" />
-        <div class="collapse-title text-lg font-medium">
+        <div class="collapse-title text-base font-medium">
           {{ item.title }}
         </div>
         <div
