@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Status } from '@/interfaces/notifier';
+import { Status } from '~/interfaces/notifier.interface';
 
 defineProps({
   notifier: {
@@ -116,3 +116,4 @@ defineEmits(['delete-notif', 'play-notif', 'pause-notif']);
   }
 }
 </style>
+~/interfaces/notifier.interface

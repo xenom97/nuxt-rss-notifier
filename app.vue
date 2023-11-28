@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { IResponse } from './interfaces/api';
-import { Status } from './interfaces/notifier';
+import { INotifier, Status } from '~/interfaces/notifier.interface';
+import { IPayloadFetchRss } from '~/interfaces/api.interface';
+import { LOCAL_STORAGE_RSS_KEY } from '~/constants/key.constant';
+import { dateFormatter } from '~/utils/date.util';
 
 useHead({
   title: 'RSS Notifier',
@@ -13,8 +15,6 @@ useHead({
   ],
 });
 
-const NOTIFIERS_KEY = 'rss-notifiers';
-
 const formState = reactive({
   url: '',
   title: '',
@@ -22,7 +22,7 @@ const formState = reactive({
   loading: false,
 });
 
-const notifiers = ref<any[]>([]);
+const notifiers = ref<INotifier[]>([]);
 
 const fetchRssData = async (
   isRefetch = false,
@@ -34,10 +34,10 @@ const fetchRssData = async (
   }
 
   try {
-    let body = {
+    let body: IPayloadFetchRss = {
       url: formState.url,
       title: formState.title,
-      interval: formState.interval,
+      interval: formState.interval!,
       id: null,
     };
 
@@ -60,10 +60,10 @@ const fetchRssData = async (
     if (res.error) {
       alert(res.error);
     } else {
-      const resData = (res as IResponse).data as IResponse['data'];
+      const resData = (res.data || {}) as INotifier;
 
       if (!isRefetch) {
-        const newData = {
+        const newData: INotifier = {
           ...resData,
           items: resData.items.slice(0, 3),
           intervalId: setInterval(() => {
@@ -73,9 +73,7 @@ const fetchRssData = async (
         };
         notifiers.value = [...notifiers.value, newData];
 
-        formState.url = '';
-        formState.title = '';
-        formState.interval = null;
+        resetForm();
 
         setTimeout(() => {
           window.scrollTo({
@@ -109,9 +107,15 @@ const fetchRssData = async (
   }
 };
 
+const resetForm = () => {
+  formState.url = '';
+  formState.title = '';
+  formState.interval = null;
+};
+
 const pauseNotif = (id: number) => {
   const idx = notifiers.value.findIndex((item) => item.id === id);
-  clearInterval(notifiers.value[idx].intervalId);
+  clearInterval(notifiers.value[idx].intervalId!);
   notifiers.value.splice(idx, 1, {
     ...notifiers.value[idx],
     status: Status.paused,
@@ -132,30 +136,24 @@ const playNotif = (id: number) => {
 
 const deleteNotif = (id: number) => {
   const idx = notifiers.value.findIndex((item) => item.id === id);
-  clearInterval(notifiers.value[idx].intervalId);
+  clearInterval(notifiers.value[idx].intervalId!);
   notifiers.value.splice(idx, 1);
 };
 
 watch(
   notifiers,
   (val) => {
-    localStorage.setItem(NOTIFIERS_KEY, JSON.stringify(val));
+    localStorage.setItem(LOCAL_STORAGE_RSS_KEY, JSON.stringify(val));
   },
   { deep: true }
 );
 
-const showNotification = (notifyData: any) => {
+const showNotification = (notifyData: INotifier) => {
   if ('Notification' in window) {
     if (Notification.permission === 'granted' && notifiers.value.length > 0) {
       const options = {
-        body: notifyData.items
-          .map((item: any) => '🚀 ' + item.title)
-          .join('\n'),
-        icon: 'https://cdn.icon-icons.com/icons2/2429/PNG/512/rss_logo_icon_147244.png',
-        // Pass payload data
-        // data: {
-        //   link: 'https://www.upwork.com',
-        // },
+        body: notifyData.items.map((item) => `🚀  ${item.title}`).join('\n'),
+        icon: '/images/rss-logo.png',
         actions: [
           { action: 'upwork', title: 'Upwork' },
           { action: 'rss-notifier', title: 'RSS Notifier' },
@@ -164,7 +162,7 @@ const showNotification = (notifyData: any) => {
 
       navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification(
-          'RSS Notifier - ' + notifyData.title,
+          `RSS Notifier - ${notifyData.title}`,
           options
         );
       });
@@ -180,13 +178,13 @@ const showNotification = (notifyData: any) => {
 
 const cleanUpInterval = () => {
   notifiers.value.forEach((item) => {
-    clearInterval(item.intervalId);
+    clearInterval(item.intervalId!);
     item.intervalId = null;
   });
 };
 
 onMounted(() => {
-  const notifiersData = localStorage.getItem(NOTIFIERS_KEY);
+  const notifiersData = localStorage.getItem(LOCAL_STORAGE_RSS_KEY);
   if (notifiersData) {
     const loadedData = JSON.parse(notifiersData);
     notifiers.value = loadedData;
@@ -239,3 +237,4 @@ onBeforeUnmount(() => {
     </footer>
   </div>
 </template>
+./interfaces/api.interface ./interfaces/notifier.interface
