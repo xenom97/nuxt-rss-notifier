@@ -12,7 +12,7 @@ defineEmits(['delete-notif', 'play-notif', 'pause-notif']);
 </script>
 
 <template>
-  <div class="card shadow-xl border border-base-300 mb-3">
+  <div class="card shadow-md border border-base-300 mb-3">
     <div class="card-body relative">
       <div class="card-actions justify-end absolute top-4 right-4">
         <button
@@ -80,12 +80,14 @@ defineEmits(['delete-notif', 'play-notif', 'pause-notif']);
       </div>
 
       <h2 class="card-title">
-        {{ notifier.title }}
+        {{ notifier.title }} <span class="text-sm">(Top 3 items)</span>
       </h2>
 
-      <div class="text-sm">
-        Top 3 items
-        <span class="text-primary"> - Interval: {{ notifier.interval }}s </span>
+      <div class="text-xs">
+        <span class="badge badge-outline text-xs">
+          Interval: {{ notifier.interval }}s
+        </span>
+        Last Updated: {{ notifier.lastUpdated || '-' }}
       </div>
 
       <div
@@ -93,21 +95,22 @@ defineEmits(['delete-notif', 'play-notif', 'pause-notif']);
         :key="idx"
         class="collapse collapse-arrow bg-base-200"
       >
-        <input type="radio" name="list" />
-        <div class="collapse-title text-xl font-medium">
+        <input type="checkbox" />
+        <div class="collapse-title text-lg font-medium">
           {{ item.title }}
         </div>
-        <div class="collapse-content">
-          <!-- eslint-disable-next-line vue/no-v-html -->
-          <div class="notifier-content" v-html="item.content"></div>
-        </div>
+        <div
+          class="collapse-content text-sm"
+          style="overflow-wrap: anywhere"
+          v-html="item.content"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <style>
-.notifier-content {
+.collapse-content {
   a {
     @apply link link-accent text-lg font-bold leading-10 w-full capitalize;
   }

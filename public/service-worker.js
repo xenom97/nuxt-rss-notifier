@@ -5,8 +5,8 @@ self.addEventListener('install', (event) => {
     caches.open('my-cache').then((cache) => {
       return cache.addAll([
         // Add the paths to your static assets (e.g., CSS, JS, images) here
-        '/',
-        '/index.html',
+        // '/',
+        // '/index.html',
         // '/your-other-static-assets',
       ]);
     })

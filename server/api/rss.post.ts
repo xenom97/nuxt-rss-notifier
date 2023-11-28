@@ -1,6 +1,7 @@
 import Parser from 'rss-parser';
 import { IResponse } from '~/interfaces/api';
 import { Status } from '~/interfaces/notifier';
+import { dateFormatter } from '~/utils/date';
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
@@ -16,6 +17,7 @@ export default defineEventHandler(async (event) => {
         title: body.title,
         id: body.id || Date.now(),
         status: Status.running,
+        lastUpdated: dateFormatter(new Date()),
       },
       error: null,
     } as IResponse;

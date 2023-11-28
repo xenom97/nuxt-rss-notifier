@@ -75,9 +75,17 @@ const fetchRssData = async (
         formState.url = '';
         formState.title = '';
         formState.interval = null;
+
+        setTimeout(() => {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+          });
+        }, 300);
       } else {
         const newData = {
           ...currentNotifierData,
+          ...resData,
           intervalId:
             currentNotifierData.intervalId ||
             setInterval(() => {
