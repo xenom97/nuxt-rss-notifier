@@ -69,6 +69,7 @@ const fetchRssData = async (
           intervalId: setInterval(() => {
             fetchRssData(true, newData.id);
           }, resData.interval * 1000),
+          lastUpdated: dateFormatter(new Date()),
         };
         notifiers.value = [...notifiers.value, newData];
 
@@ -92,6 +93,7 @@ const fetchRssData = async (
               fetchRssData(true, newData.id);
             }, currentNotifierData.interval * 1000),
           items: resData.items.slice(0, 3),
+          lastUpdated: dateFormatter(new Date()),
         };
         notifiers.value.splice(currentNotifierIdx, 1, newData);
 
