@@ -109,7 +109,7 @@ defineEmits(['delete-notif', 'play-notif', 'pause-notif']);
 <style>
 .notifier-content {
   a {
-    @apply link mt-3 w-full capitalize;
+    @apply link link-accent text-lg font-bold leading-10 w-full capitalize;
   }
 }
 </style>

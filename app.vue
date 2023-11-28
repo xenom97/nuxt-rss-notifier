@@ -142,6 +142,14 @@ const showNotification = (notifyData: any) => {
           .map((item: any) => '🚀 ' + item.title)
           .join('\n'),
         icon: 'https://cdn.icon-icons.com/icons2/2429/PNG/512/rss_logo_icon_147244.png',
+        // Pass payload data
+        // data: {
+        //   link: 'https://www.upwork.com',
+        // },
+        actions: [
+          { action: 'upwork', title: 'Upwork' },
+          { action: 'rss-notifier', title: 'RSS Notifier' },
+        ],
       };
 
       navigator.serviceWorker.ready.then((registration) => {

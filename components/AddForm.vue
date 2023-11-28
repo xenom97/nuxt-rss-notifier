@@ -57,7 +57,12 @@ const state = computed({
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary w-full mt-6 text-white">
+    <button
+      type="submit"
+      class="btn btn-primary w-full mt-6 text-white"
+      :class="{ 'btn-disabled': state.loading }"
+      :disabled="state.loading"
+    >
       <template v-if="state.loading">
         <span class="loading loading-spinner"></span>
         Loading
