@@ -7,10 +7,10 @@ const toggleTheme = () => {
 </script>
 
 <template>
-  <div>
+  <div class="sticky top-0 z-10">
     <Html :data-theme="theme"></Html>
 
-    <nav class="navbar bg-base-100 drop-shadow-md sticky top-0 z-10">
+    <nav class="navbar bg-base-100 drop-shadow-md">
       <div class="max-w-4xl mx-auto w-full">
         <div class="flex-1">
           <a class="btn btn-ghost text-xl">RSS Notifier</a>
