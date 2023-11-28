@@ -135,23 +135,28 @@ watch(
 );
 
 const showNotification = (notifyData: any) => {
-  if (Notification.permission === 'granted' && notifiers.value.length > 0) {
-    const options = {
-      body: notifyData.items.map((item: any) => '🚀 ' + item.title).join('\n'),
-    };
-    const notification = new Notification(
-      'RSS Notifier - ' + notifyData.title,
-      options
-    );
-    notification.addEventListener('click', () => {
-      window.open('https://www.upwork.com/', '_blank');
-    });
-  } else if (Notification.permission !== 'denied') {
-    Notification.requestPermission().then((permission) => {
-      if (permission === 'granted' && notifiers.value.length > 0) {
-        showNotification(notifyData);
-      }
-    });
+  if ('Notification' in window) {
+    if (Notification.permission === 'granted' && notifiers.value.length > 0) {
+      const options = {
+        body: notifyData.items
+          .map((item: any) => '🚀 ' + item.title)
+          .join('\n'),
+        icon: 'https://cdn.icon-icons.com/icons2/2429/PNG/512/rss_logo_icon_147244.png',
+      };
+
+      navigator.serviceWorker.ready.then((registration) => {
+        registration.showNotification(
+          'RSS Notifier - ' + notifyData.title,
+          options
+        );
+      });
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted' && notifiers.value.length > 0) {
+          showNotification(notifyData);
+        }
+      });
+    }
   }
 };
 

@@ -14,4 +14,6 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: true,
   },
+
+  plugins: [{ src: '~/plugins/service-worker.js', mode: 'client' }],
 });
