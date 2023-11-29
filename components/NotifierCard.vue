@@ -116,4 +116,3 @@ defineEmits(['delete-notif', 'play-notif', 'pause-notif']);
   }
 }
 </style>
-~/interfaces/notifier.interface
