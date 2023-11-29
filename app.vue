@@ -239,4 +239,3 @@ onBeforeUnmount(() => {
     </footer>
   </div>
 </template>
-./interfaces/api.interface ./interfaces/notifier.interface ~/utils/url.util
