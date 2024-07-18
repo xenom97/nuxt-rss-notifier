@@ -6,8 +6,8 @@ self.addEventListener('notificationclick', (event) => {
   event.notification.close(); // Close the notification when clicked
 
   const payload = event.notification?.data;
-  let link = 'https://rss-notifier.vercel.app'
-  
+  let link = 'https://rss-notifier.ahmadev.id';
+
   if (event.action === 'custom' && payload?.link) {
     link = payload?.link;
   }
